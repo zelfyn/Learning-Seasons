@@ -27,7 +27,7 @@ void function(double &a, double &b, double &c, double &hasilA, double &hasilB, d
 }
 
 int main() {
-    double a, b, c, hasilA, hasilB, hasilC, iterasi;
+    double a, b, c, hasilA, hasilB, hasilC, iterasi, error;
     cout << "Menghitung Akar dengan Metode Biseksi" << endl;
     cout << "Menggunakan fungsi : f(x) = x^(3) + 2x^(2) - 3x" << endl;
     
@@ -37,6 +37,8 @@ int main() {
     cin >> b;
     cout << "Masukkan Nilai iterasi = ";
     cin >> iterasi;
+    cout << "Masukkan Batas Error = ";
+    cin >> error;
 
     cout << "\n-------------------------------------------------------------------" << endl;
     cout << left; 
@@ -50,6 +52,10 @@ int main() {
 
     for (int i = 0; i <= iterasi; i++){
         function(a,b,c,hasilA,hasilB,hasilC);
+        
+        if (abs(hasilC) <= error) {
+            break;
+        }
     }
 
     return 0;
