@@ -147,6 +147,62 @@ void menuSecant() {
 
 }
 
+double turunanFungsi(double x, double koefA, double koefB, double koefC) {
+    return (3 * koefA * pow(x, 2)) + (2 * koefB * x) - koefC;
+}
+
+void menuNewton(double koefA, double koefB, double koefC, double koefD) {
+    double x0, x1, fx0, f_aksen_x0, error;
+    int max_iterasi;
+
+    cout << "\n=== METODE NEWTON-RAPHSON ===" << endl;
+    
+    cout << "Masukkan tebakan awal (x0)     = "; cin >> x0;
+    cout << "Masukkan Batas Toleransi Error = "; cin >> error;
+    cout << "Masukkan Maksimum Iterasi      = "; cin >> max_iterasi;
+
+    cout << "\n----------------------------------------------------------------------" << endl;
+    cout << left << fixed << setprecision(5);
+    cout << setw(10) << "Iterasi"
+         << setw(15) << "x0" 
+         << setw(15) << "f(x0)" 
+         << setw(15) << "f'(x0)" 
+         << setw(15) << "x1" << endl;
+    cout << "----------------------------------------------------------------------" << endl;
+
+    for (int i = 1; i <= max_iterasi; i++) {
+        fx0 = fungsi(x0, koefA, koefB, koefC, koefD);
+        f_aksen_x0 = turunanFungsi(x0, koefA, koefB, koefC);
+
+        if (f_aksen_x0 == 0.0) {
+            cout << "Dihentikan: Turunan f'(x0) bernilai 0 (Terjadi pembagian dengan nol)." << endl;
+            return;
+        }
+
+        x1 = x0 - (fx0 / f_aksen_x0);
+
+        cout << setw(10) << i
+             << setw(15) << x0
+             << setw(15) << fx0
+             << setw(15) << f_aksen_x0
+             << setw(15) << x1 << endl;
+
+        double fx1 = fungsi(x1, koefA, koefB, koefC, koefD);
+        if (abs(fx1) <= error) {
+            cout << "----------------------------------------------------------------------" << endl;
+            cout << "\nKonvergen tercapai pada iterasi ke-" << i << endl;
+            cout << "Akar persamaan didapatkan : x = " << x1 << endl;
+            cout << "Nilai f(x)                = " << fx1 << " (sudah <= toleransi error " << error << ")" << endl;
+            return;
+        }
+
+        x0 = x1;
+    }
+
+    cout << "----------------------------------------------------------------------" << endl;
+    cout << "\nPencarian dihentikan. Telah mencapai batas iterasi maksimum = " << max_iterasi << endl;
+}
+
 void ubahKoef(double &koefA, double &koefB,
               double &koefC, double &koefD) {
 
@@ -180,10 +236,10 @@ int main() {
         cout << "1. Metode Biseksi" << endl;
         cout << "2. Tabulasi Fungsi" << endl;
         cout << "3. Metode Secant" << endl;
-        cout << "4. Fungsi Lain" << endl;
+        cout << "4. Newton Raphson" << endl;
         cout << "5. Ubah Koefisien Fungsi" << endl;
         cout << "6. Keluar" << endl;
-        cout << "Pilih menu (1-5): ";
+        cout << "Pilih menu (1-6): ";
         cin >> pilihan;
 
         cout << "\nBerikut adalah fungsi persamaan yang dipakai : " << endl;
@@ -201,7 +257,7 @@ int main() {
                 menuSecant();
                 break;
             case 4:
-                cout << "Fungsi Lain Menyusul" << endl;
+                menuNewton(koefA,koefB,koefC,koefD);
                 break;
             case 5:
                 ubahKoef(koefA,koefB,koefC,koefD);

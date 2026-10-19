@@ -39,6 +39,7 @@ string Format (int frmtValue) {
 }
 
 struct renderTask {
+    int renderID;
     string taskName, format;
     renderTask* next;
 };
@@ -47,9 +48,12 @@ renderTask* head = NULL;
 renderTask* tail = NULL;
 renderTask* cur = NULL;
 
-void addRender (string name, int frmtValue) {
+int autoID = 1;
+
+void addRender (string name, int &autoID, int frmtValue) {
     renderTask* newTask = new renderTask();
 
+    newTask->renderID = autoID++;
     newTask->taskName = name;
     newTask->format = Format(frmtValue);
     newTask->next = NULL;
@@ -69,18 +73,19 @@ void listQueue () {
     cur = head;
 
     if (cur == NULL) {
-        cout << "[!] Belum ada proiject yang ditambah" << endl;
+        cout << "[!] Belum ada project yang ditambah" << endl;
         return;
     }
 
     cout << "\n=== Daftar Antrian Render After Effects ===" << endl;
-    int nomor = 1;
+    int nomorID = 1;
+
 
     while (cur != NULL)
     {
-        cout << nomor << ". " << cur->taskName << cur->format << endl;
+        cout << nomorID << ". " << cur->taskName << cur->format << endl;
         cur = cur->next;
-        nomor++;
+        nomorID++;
     }
     cout << "===========================================\n" << endl;
 }
@@ -92,9 +97,10 @@ void renderProces () {
     }
     
     renderTask* del = head;
+    cout << "\n[~] Memulai Render: [ID: " << del->renderID << "] " << del->taskName << del->format << " ..." << endl;
     cout << endl;
     timer();
-    cout << "\n[v] Rendering SELESAI: '" << del->taskName << endl;
+    cout << "\n[v] Rendering SELESAI: '" << del->taskName << "'\n" << endl;
 
     head = head->next;
 
@@ -118,7 +124,7 @@ int main() {
         cout << "4. Tampilkan Daftar Antrian" << endl;
         cout << "5. Stop/Batalkan Render" << endl;
         cout << "6. Keluar Program" << endl;
-        cout << "Pilih menu (1-5): ";
+        cout << "Pilih menu (1-6): ";
         cin >> pilihan;
         
         cin.ignore();
@@ -134,14 +140,13 @@ int main() {
             cout << "1. Mp4 || 2. MOV || 3. AVI " << endl;
             cin >> pilihanFormat;
 
-            addRender (namaVideo, pilihanFormat);
+            addRender (namaVideo, autoID, pilihanFormat);
             break;
         case 2:
             renderProces();
             break;
         case 3:
             while (head != NULL) {
-                cout << head << endl;
                 renderProces();
             }
             break;
@@ -158,6 +163,7 @@ int main() {
                     delete temp;
                 }
                 tail = NULL;
+                autoID = 1;
                 cout << "[!] Semua antrian render telah dibatalkan." << endl;
             }
             break;
