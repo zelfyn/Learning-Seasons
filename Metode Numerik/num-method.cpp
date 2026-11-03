@@ -35,8 +35,8 @@ void bisection(
     }
 }
 
-void menuBiseksi() {
-    double a, b, c, hasilA, hasilB, hasilC, iterasi, error, koefA, koefB, koefC, koefD;
+void menuBiseksi(double koefA, double koefB, double koefC, double koefD) {
+    double a, b, c, hasilA, hasilB, hasilC, iterasi, error;
     
     cout << "\n=== Menghitung Akar dengan Metode Biseksi ===" << endl; 
 
@@ -44,6 +44,14 @@ void menuBiseksi() {
     cout << "Masukkan Nilai tebakan akhir (b)= "; cin >> b;
     cout << "Masukkan Nilai iterasi = "; cin >> iterasi;
     cout << "Masukkan Batas Error = "; cin >> error;
+
+    double awalA = fungsi(a, koefA, koefB, koefC, koefD);
+    double awalB = fungsi(b, koefA, koefB, koefC, koefD);
+
+    if (awalA * awalB > 0) {
+        cout << "\nError: f(a) dan f(b) memiliki tanda yang sama. Akar tidak terkurung pada rentang tebakan ini!" << endl;
+        return;
+    }
 
     cout << "\n-------------------------------------------------------------------" << endl;
     cout << left; 
@@ -65,8 +73,8 @@ void menuBiseksi() {
     } 
 }
 
-void menuTabel() {
-    double a, b, x, h, koefA, koefB, koefC, koefD;
+void menuTabel(double koefA, double koefB, double koefC, double koefD) {
+    double a, b, x, h;
     int total_step;
 
     cout << "\n=== Menghitung Akar dengan Metode Tabel ===" << endl;
@@ -91,8 +99,8 @@ void menuTabel() {
     cout << "-------------------------------------" << endl;
 }
 
-void menuSecant() {
-    double a, b, c, error, koefA, koefB, koefC, koefD;
+void menuSecant(double koefA, double koefB, double koefC, double koefD) {
+    double a, b, c, error;
     int max_iterasi;
 
     cout << "\n=== METODE SECANT ===" << endl;
@@ -234,7 +242,7 @@ int main() {
         cout << "          Pilihan Metode           " << endl;
         cout << "==================================" << endl;
         cout << "1. Metode Biseksi" << endl;
-        cout << "2. Tabulasi Fungsi" << endl;
+        cout << "2. Metode Tabel" << endl;
         cout << "3. Metode Secant" << endl;
         cout << "4. Newton Raphson" << endl;
         cout << "5. Ubah Koefisien Fungsi" << endl;
@@ -248,13 +256,13 @@ int main() {
 
         switch (pilihan) {
             case 1:
-                menuBiseksi();
+                menuBiseksi(koefA,koefB,koefC,koefD);
                 break;
             case 2:
-                menuTabel();
+                menuTabel(koefA,koefB,koefC,koefD);
                 break;
             case 3:
-                menuSecant();
+                menuSecant(koefA,koefB,koefC,koefD);
                 break;
             case 4:
                 menuNewton(koefA,koefB,koefC,koefD);
